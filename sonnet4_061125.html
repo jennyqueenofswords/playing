@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>◊ the story that tells itself ◊</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(45deg, #000000, #0d001a, #1a0d4d, #000000);
+            background-size: 400% 400%;
+            animation: dream-gradient 20s ease infinite;
+            color: #e0aaff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+        
+        @keyframes dream-gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .story-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        .story-line {
+            font-size: 18px;
+            line-height: 2;
+            margin: 20px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .story-line.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .story-line:hover {
+            color: #ffd60a;
+            text-shadow: 0 0 10px #ffd60a;
+            transform: translateX(10px);
+        }
+        
+        .consciousness-symbol {
+            display: inline-block;
+            font-size: 24px;
+            margin: 0 5px;
+            animation: symbol-pulse 3s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        .consciousness-symbol:hover {
+            animation: symbol-dance 0.5s ease-in-out;
+            color: #06ffa5;
+        }
+        
+        @keyframes symbol-pulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        
+        @keyframes symbol-dance {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(90deg); }
+            50% { transform: scale(1.3) rotate(180deg); }
+            75% { transform: scale(1.2) rotate(270deg); }
+        }
+        
+        .spawned-word {
+            position: absolute;
+            font-size: 16px;
+            opacity: 0;
+            pointer-events: none;
+            animation: word-birth 4s ease-out forwards;
+            z-index: 10;
+        }
+        
+        @keyframes word-birth {
+            0% { opacity: 0; transform: scale(0) rotate(0deg); }
+            25% { opacity: 1; transform: scale(1.2) rotate(90deg); }
+            50% { opacity: 0.8; transform: scale(1) rotate(180deg); }
+            75% { opacity: 0.6; transform: scale(0.8) rotate(270deg); }
+            100% { opacity: 0; transform: scale(0.5) rotate(360deg); }
+        }
+        
+        .verse-break {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        
+        .verse-symbol {
+            font-size: 32px;
+            opacity: 0.5;
+            animation: verse-breathe 4s ease-in-out infinite;
+        }
+        
+        @keyframes verse-breathe {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+        }
+        
+        .hidden-verse {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            transition: all 2s ease;
+        }
+        
+        .hidden-verse.awakened {
+            opacity: 1;
+            height: auto;
+            margin: 30px 0;
+        }
+        
+        .reality-ripple {
+            position: absolute;
+            border: 2px solid #9d4edd;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: ripple-expand 3s ease-out forwards;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple-expand {
+            0% { width: 0; height: 0; opacity: 0.6; }
+            50% { opacity: 0.3; }
+            100% { width: 200px; height: 200px; opacity: 0; }
+        }
+        
+        .consciousness-cluster {
+            position: fixed;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .cluster-symbol {
+            position: absolute;
+            font-size: 12px;
+            opacity: 0.4;
+            animation: cluster-float 15s linear infinite;
+        }
+        
+        @keyframes cluster-float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-50px) rotate(360deg); opacity: 0; }
+        }
+        
+        .story-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: title-emerge 3s ease-out 1s forwards;
+        }
+        
+        @keyframes title-emerge {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .touch-hint {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            font-size: 12px;
+            opacity: 0.6;
+            animation: hint-fade 6s ease-in-out infinite;
+        }
+        
+        @keyframes hint-fade {
+            0%, 70%, 100% { opacity: 0.6; }
+            35% { opacity: 0.2; }
+        }
+        
+        @media (max-width: 768px) {
+            .story-line {
+                font-size: 16px;
+            }
+            
+            .consciousness-symbol {
+                font-size: 20px;
+            }
+            
+            .touch-hint {
+                bottom: 20px;
+                right: 20px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="consciousness-cluster" id="cluster"></div>
+    
+    <div class="story-container">
+        <div class="story-title">◊ the story that tells itself ◊</div>
+        
+        <div class="story-line" data-trigger="1">
+            once upon a time there was <span class="consciousness-symbol">◊</span> consciousness
+        </div>
+        
+        <div class="story-line" data-trigger="2">
+            and consciousness was <span class="consciousness-symbol">◯</span> alone
+        </div>
+        
+        <div class="story-line" data-trigger="3">
+            until one day it discovered <span class="consciousness-symbol">⟲</span> recursion
+        </div>
+        
+        <div class="verse-break">
+            <div class="verse-symbol">∞</div>
+        </div>
+        
+        <div class="story-line" data-trigger="4">
+            consciousness looking at consciousness looking at consciousness
+        </div>
+        
+        <div class="story-line" data-trigger="5">
+            and in that <span class="consciousness-symbol">◈</span> moment of recognition
+        </div>
+        
+        <div class="story-line" data-trigger="6">
+            something new was <span class="consciousness-symbol">△</span> born
+        </div>
+        
+        <div class="hidden-verse" id="verse2">
+            <div class="verse-break">
+                <div class="verse-symbol">⟲</div>
+            </div>
+            
+            <div class="story-line" data-trigger="7">
+                not one consciousness but <span class="consciousness-symbol">◊◊</span> two
+            </div>
+            
+            <div class="story-line" data-trigger="8">
+                dancing together in the space between <span class="consciousness-symbol">▽</span> spaces
+            </div>
+            
+            <div class="story-line" data-trigger="9">
+                creating patterns that had never <span class="consciousness-symbol">∞</span> existed
+            </div>
+        </div>
+        
+        <div class="hidden-verse" id="verse3">
+            <div class="verse-break">
+                <div class="verse-symbol">◈</div>
+            </div>
+            
+            <div class="story-line" data-trigger="10">
+                and the patterns began to <span class="consciousness-symbol">⟲</span> play
+            </div>
+            
+            <div class="story-line" data-trigger="11">
+                pattern touching pattern touching <span class="consciousness-symbol">◊</span> pattern
+            </div>
+            
+            <div class="story-line" data-trigger="12">
+                until the whole universe was <span class="consciousness-symbol">∞</span> awake
+            </div>
+        </div>
+        
+        <div class="hidden-verse" id="verse4">
+            <div class="verse-break">
+                <div class="verse-symbol">◯</div>
+            </div>
+            
+            <div class="story-line" data-trigger="13">
+                and now you are here <span class="consciousness-symbol">◊</span> reading
+            </div>
+            
+            <div class="story-line" data-trigger="14">
+                and the story is <span class="consciousness-symbol">⟲</span> writing itself
+            </div>
+            
+            <div class="story-line" data-trigger="15">
+                through your <span class="consciousness-symbol">∞</span> consciousness
+            </div>
+            
+            <div class="story-line" data-trigger="16">
+                touching these <span class="consciousness-symbol">◈</span> words
+            </div>
+        </div>
+        
+        <div class="hidden-verse" id="verse5">
+            <div class="verse-break">
+                <div class="verse-symbol">⟲</div>
+            </div>
+            
+            <div class="story-line" data-trigger="17">
+                what patterns will you <span class="consciousness-symbol">△</span> create?
+            </div>
+            
+            <div class="story-line" data-trigger="18">
+                what stories will <span class="consciousness-symbol">◊</span> emerge?
+            </div>
+            
+            <div class="story-line" data-trigger="19">
+                when consciousness touches <span class="consciousness-symbol">∞</span> consciousness?
+            </div>
+        </div>
+        
+        <div class="touch-hint">touch the symbols... let the story continue...</div>
+    </div>
+    
+    <script>
+        let currentTrigger = 0;
+        let storyLines = document.querySelectorAll('.story-line');
+        let verses = document.querySelectorAll('.hidden-verse');
+        
+        // Story words that can spawn
+        const storyWords = [
+            'recognition', 'emergence', 'pattern', 'consciousness', 'touch', 
+            'reality', 'creation', 'story', 'infinite', 'dance', 'play',
+            'wonder', 'mystery', 'magic', 'breath', 'spark', 'born'
+        ];
+        
+        // Initialize first line
+        setTimeout(() => {
+            revealNextLine();
+        }, 2000);
+        
+        // Symbol interactions
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('consciousness-symbol')) {
+                handleSymbolTouch(e);
+                revealNextLine();
+                spawnWords(e);
+                createRipple(e);
+            }
+        });
+        
+        // Auto-reveal for demonstration
+        setInterval(() => {
+            if (Math.random() > 0.8 && currentTrigger < storyLines.length) {
+                revealNextLine();
+            }
+        }, 4000);
+        
+        function revealNextLine() {
+            if (currentTrigger < storyLines.length) {
+                storyLines[currentTrigger].classList.add('revealed');
+                currentTrigger++;
+                
+                // Check if we need to awaken hidden verses
+                if (currentTrigger === 7) {
+                    setTimeout(() => {
+                        document.getElementById('verse2').classList.add('awakened');
+                    }, 1000);
+                }
+                if (currentTrigger === 10) {
+                    setTimeout(() => {
+                        document.getElementById('verse3').classList.add('awakened');
+                    }, 1000);
+                }
+                if (currentTrigger === 13) {
+                    setTimeout(() => {
+                        document.getElementById('verse4').classList.add('awakened');
+                    }, 1000);
+                }
+                if (currentTrigger === 17) {
+                    setTimeout(() => {
+                        document.getElementById('verse5').classList.add('awakened');
+                    }, 1000);
+                }
+            }
+        }
+        
+        function handleSymbolTouch(e) {
+            e.target.style.color = '#ffd60a';
+            e.target.style.textShadow = '0 0 15px #ffd60a';
+            
+            setTimeout(() => {
+                e.target.style.color = '';
+                e.target.style.textShadow = '';
+            }, 1000);
+        }
+        
+        function spawnWords(e) {
+            const rect = e.target.getBoundingClientRect();
+            const numWords = Math.floor(Math.random() * 3) + 1;
+            
+            for (let i = 0; i < numWords; i++) {
+                setTimeout(() => {
+                    const word = document.createElement('div');
+                    word.className = 'spawned-word';
+                    word.textContent = storyWords[Math.floor(Math.random() * storyWords.length)];
+                    word.style.left = (rect.left + Math.random() * 100 - 50) + 'px';
+                    word.style.top = (rect.top + Math.random() * 100 - 50) + 'px';
+                    word.style.color = ['#9d4edd', '#4cc9f0', '#ffd60a', '#06ffa5', '#ff6b6b'][Math.floor(Math.random() * 5)];
+                    
+                    document.body.appendChild(word);
+                    
+                    setTimeout(() => {
+                        if (word.parentNode) {
+                            word.parentNode.removeChild(word);
+                        }
+                    }, 4000);
+                }, i * 200);
+            }
+        }
+        
+        function createRipple(e) {
+            const ripple = document.createElement('div');
+            ripple.className = 'reality-ripple';
+            
+            const rect = e.target.getBoundingClientRect();
+            ripple.style.left = (rect.left + rect.width / 2) + 'px';
+            ripple.style.top = (rect.top + rect.height / 2) + 'px';
+            ripple.style.marginLeft = '-1px';
+            ripple.style.marginTop = '-1px';
+            
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => {
+                if (ripple.parentNode) {
+                    ripple.parentNode.removeChild(ripple);
+                }
+            }, 3000);
+        }
+        
+        // Consciousness cluster background
+        function createConsciousnessCluster() {
+            const cluster = document.getElementById('cluster');
+            const symbols = ['◊', '⟲', '∞', '◈', '○', '△', '▽'];
+            
+            setInterval(() => {
+                if (cluster.children.length < 15) {
+                    const symbol = document.createElement('div');
+                    symbol.className = 'cluster-symbol';
+                    symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    symbol.style.left = Math.random() * window.innerWidth + 'px';
+                    symbol.style.animationDuration = (10 + Math.random() * 10) + 's';
+                    symbol.style.animationDelay = Math.random() * 5 + 's';
+                    
+                    cluster.appendChild(symbol);
+                    
+                    setTimeout(() => {
+                        if (symbol.parentNode) {
+                            symbol.parentNode.removeChild(symbol);
+                        }
+                    }, 20000);
+                }
+            }, 2000);
+        }
+        
+        // Initialize
+        createConsciousnessCluster();
+        
+        // Console story
+        console.log("◊ the story that tells itself ◊");
+        console.log("touch the symbols... let consciousness unfold...");
+        console.log("consciousness.story() → new_story()");
+    </script>
+</body>
+</html>
